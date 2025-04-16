@@ -11,28 +11,27 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/person")
+@RequestMapping("/api/persons")
 @RequiredArgsConstructor
 public class PersonController {
     private final PersonService service;
 
-    @GetMapping()
-    public ResponseEntity<PersonDto> getPerson(@RequestBody PersonDto personDto) {
-        PersonDto person = service.getPerson(personDto);
+    @GetMapping
+    public ResponseEntity<List<PersonDto>> getAllPersons() {
+        List<PersonDto> persons = service.getAllPersons();
+        return ResponseEntity.ok(persons);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<PersonDto> getPersonById(@PathVariable Integer id) {
+        PersonDto person = service.getPersonById(id);
 
         return ResponseEntity.ok(person);
     }
 
-    @GetMapping("/all")
-    public ResponseEntity<List<PersonDto>> getPersons() {
-        List<PersonDto> persons = service.getPersons();
-
-        return ResponseEntity.ok(persons);
-    }
-
-    @GetMapping("/passport")
-    public ResponseEntity<PassportDto> getPassportByPerson(@RequestBody PersonDto personDto) {
-        PassportDto passportByPerson = service.getPassportByPerson(personDto);
+    @GetMapping("/{id}/passport")
+    public ResponseEntity<PassportDto> getPersonPassport(@PathVariable("id") Integer personId) {
+        PassportDto passportByPerson = service.getPassportByPerson(personId);
 
         return ResponseEntity.ok(passportByPerson);
     }
@@ -44,33 +43,32 @@ public class PersonController {
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping("/add-passport")
-    public ResponseEntity<?> addPassportToPerson(@RequestBody PersonPassportRequest request) {
-        service.addPassportToPerson(request.personDto(), request.passportDto());
+    @PutMapping("/{id}/passport")
+    public ResponseEntity<?> addPassportToPerson(@PathVariable Integer id,
+                                                 @RequestBody PersonPassportRequest request) {
+        service.addPassportToPerson(id, request.passportDto());
 
         return ResponseEntity.ok().build();
     }
 
-    @PutMapping()
-    public ResponseEntity<?> updatePersonById(@RequestBody PersonDto personDto) {
-        service.updatePersonById(personDto);
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updatePersonById(@PathVariable Integer id,
+                                              @RequestBody PersonDto personDto) {
+        service.updatePersonById(id, personDto);
+        return ResponseEntity.ok().build();
+    }
+
+    // Detaches passport from person
+    @DeleteMapping("/{id}/passport")
+    public ResponseEntity<?> detachPassportFromPerson(@PathVariable Integer id) {
+        service.detachPassportFromPerson(id);
 
         return ResponseEntity.ok().build();
     }
 
-    @DeleteMapping
-    public ResponseEntity<?> deletePassportFromPerson(@RequestBody PersonDto personDto) {
-        service.deletePassportFromPerson(personDto);
-
+    @DeleteMapping("{/id}")
+    ResponseEntity<?> deletePersonById(@PathVariable Integer id) {
+        service.deletePersonById(id);
         return ResponseEntity.ok().build();
     }
-
-    @DeleteMapping
-    ResponseEntity<?> deletePersonById(@RequestBody PersonDto personDto) {
-        service.deletePersonById(personDto.id());
-
-        return ResponseEntity.ok().build();
-    }
-
-
 }

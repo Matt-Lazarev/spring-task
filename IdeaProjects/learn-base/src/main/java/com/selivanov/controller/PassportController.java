@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/passport")
+@RequestMapping("/api/passports")
 @RequiredArgsConstructor
 public class PassportController {
     private final PassportService service;
@@ -18,7 +18,6 @@ public class PassportController {
     @PostMapping
     public ResponseEntity<?> savePassport(@RequestBody PassportDto passportDto) {
         service.savePassport(passportDto);
-
         return ResponseEntity.ok().build();
     }
 }
