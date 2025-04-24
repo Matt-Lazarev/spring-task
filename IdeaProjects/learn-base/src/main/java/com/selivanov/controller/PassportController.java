@@ -19,7 +19,6 @@ public class PassportController {
     @PostMapping
     public ResponseEntity<?> savePassport(@Valid @RequestBody PassportDto passportDto) {
         service.savePassport(passportDto);
-
         return ResponseEntity.ok().build();
     }
 }

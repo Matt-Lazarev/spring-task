@@ -12,8 +12,8 @@ import java.util.Optional;
 @Repository
 public interface EmployeeRepository extends JpaRepository<Employee, Integer> {
     @Query("select e from Employee e left join fetch e.department where e.department.id = :departmentId")
-    List<Employee> getEmployeesByDepartment(@Param("departmentId") Integer departmentId);
+    List<Employee> findEmployeesByDepartment(@Param("departmentId") Integer departmentId);
 
-    @Query("select e from Employee e where e.id = :id")
-    Optional<Employee> getEmployeeById(@Param("id") Integer id);
+    @Query("select e from Employee e left join fetch e.department where e.id = :id")
+    Optional<Employee> findEmployeeById(@Param("id") Integer id);
 }

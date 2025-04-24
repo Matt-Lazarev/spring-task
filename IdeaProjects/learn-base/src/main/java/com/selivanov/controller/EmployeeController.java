@@ -15,19 +15,19 @@ import java.util.List;
 public class EmployeeController {
     private final EmployeeService service;
 
-    @GetMapping("/{id}")
-    private ResponseEntity<EmployeeDto> getEmployeeById(@PathVariable Integer id) {
-        EmployeeDto employee = service.getEmployeeById(id);
-        return ResponseEntity.ok(employee);
-    }
-
     @GetMapping
     public ResponseEntity<List<EmployeeDto>> getAllEmployees() {
         List<EmployeeDto> employees = service.getAllEmployees();
         return ResponseEntity.ok(employees);
     }
 
-    @GetMapping("/department/{id}")
+    @GetMapping("/{id}")
+    private ResponseEntity<EmployeeDto> getEmployeeById(@PathVariable Integer id) {
+        EmployeeDto employee = service.getEmployeeById(id);
+        return ResponseEntity.ok(employee);
+    }
+
+    @GetMapping("/department/{id}") //    /api/departments/{id}/employees
     public ResponseEntity<List<EmployeeDto>> getEmployeesByDepartment(@PathVariable("id") Integer departmentId) {
         List<EmployeeDto> employees = service.getEmployeesByDepartment(departmentId);
         return ResponseEntity.ok(employees);
@@ -39,22 +39,23 @@ public class EmployeeController {
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping("/department/{id}")
-    public ResponseEntity<?> createEmployeeToDepartment(@PathVariable("id") Integer id,
-                                                        @Valid @RequestBody EmployeeDto employeeDto) {
-        service.createEmployeeToDepartment(id, employeeDto);
+    @PostMapping("/department/{id}")  //    /api/departments/{deptId}/employees
+    public ResponseEntity<?> addEmployeeToDepartment(@PathVariable("id") Integer id,
+                                                     @Valid @RequestBody EmployeeDto employeeDto) {
+        service.createEmployeeInDepartment(id, employeeDto);
         return ResponseEntity.ok().build();
     }
 
-    @PutMapping("/{id}/attach-department/{departmentId}")
+    // OpenAPI -> Swagger
+    @PutMapping("/{id}/department/{departmentId}/attach")   //    /api/departments/{deptId}/employees/{empId}
     public ResponseEntity<?> attachEmployeeToDepartment(@PathVariable("id") Integer employeeId,
                                                         @PathVariable("departmentId") Integer departmentId) {
         service.attachEmployeeToDepartment(employeeId, departmentId);
         return ResponseEntity.ok().build();
     }
 
-    @PutMapping("/{employeeId}/department/{departmentId}")
-    public ResponseEntity<?> transferEmployeeToDepartment(@PathVariable("employeeId") Integer employeeId,
+    @PutMapping("/{id}/department/{departmentId}/transfer")
+    public ResponseEntity<?> transferEmployeeToDepartment(@PathVariable("id") Integer employeeId,
                                                           @PathVariable("departmentId") Integer departmentId) {
         service.transferEmployeeToDepartment(employeeId, departmentId);
         return ResponseEntity.ok().build();
@@ -67,8 +68,9 @@ public class EmployeeController {
         return ResponseEntity.ok().build();
     }
 
-    @DeleteMapping("/{employeeId}/department/{departmentId}")
-    public ResponseEntity<?> detachEmployeeFromDepartment(@PathVariable("employeeId") Integer employeeId,
+    // employee is not deleted
+    @DeleteMapping("/{id}/department/{departmentId}")
+    public ResponseEntity<?> detachEmployeeFromDepartment(@PathVariable("id") Integer employeeId,
                                                           @PathVariable("departmentId") Integer departmentId) {
         service.detachEmployeeFromDepartment(departmentId, employeeId);
         return ResponseEntity.ok().build();

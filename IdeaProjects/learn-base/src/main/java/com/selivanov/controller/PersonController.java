@@ -17,16 +17,16 @@ import java.util.List;
 public class PersonController {
     private final PersonService service;
 
-    @GetMapping("/{id}")
-    public ResponseEntity<PersonDto> getPersonById(@PathVariable Integer id) {
-        PersonDto person = service.getPerson(id);
-        return ResponseEntity.ok(person);
-    }
-
     @GetMapping
     public ResponseEntity<List<PersonDto>> getPersons() {
         List<PersonDto> persons = service.getPersons();
         return ResponseEntity.ok(persons);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<PersonDto> getPersonById(@PathVariable Integer id) {
+        PersonDto person = service.getPerson(id);
+        return ResponseEntity.ok(person);
     }
 
     @GetMapping("/{id}/passport")
@@ -44,7 +44,7 @@ public class PersonController {
     @PostMapping("/{id}/passport")
     public ResponseEntity<?> addPassportToPerson(@PathVariable("id") Integer personId,
                                                  @Valid @RequestBody PersonPassportRequest request) {
-        service.addPassportToPerson(personId, request.passportDto());
+        service.addPassportToPerson(personId, request.passport());
         return ResponseEntity.ok().build();
     }
 
@@ -63,7 +63,7 @@ public class PersonController {
     }
 
     @DeleteMapping("/{id}")
-    ResponseEntity<?> deletePersonById(@PathVariable Integer id) {
+    public ResponseEntity<?> deletePersonById(@PathVariable Integer id) {
         service.deletePersonById(id);
         return ResponseEntity.ok().build();
     }

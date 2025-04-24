@@ -15,6 +15,12 @@ import java.util.List;
 public class StudentController {
     private final StudentService studentService;
 
+    @GetMapping
+    public ResponseEntity<List<StudentDto>> getAllStudents() {
+        List<StudentDto> students = studentService.getAllStudents();
+        return ResponseEntity.ok(students);
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<StudentDto> getStudentById(@PathVariable("id") Integer id) {
         StudentDto student = studentService.getStudentById(id);
@@ -27,20 +33,13 @@ public class StudentController {
         return ResponseEntity.ok(student);
     }
 
-    @GetMapping
-    public ResponseEntity<List<StudentDto>> getAllStudents() {
-        List<StudentDto> students = studentService.getAllStudents();
-        return ResponseEntity.ok(students);
-    }
-
     @PostMapping
     public ResponseEntity<?> saveStudent(@Valid @RequestBody StudentDto studentDto) {
         studentService.saveStudent(studentDto);
-
         return ResponseEntity.ok().build();
     }
 
-    @PutMapping("/{studentId}/course/{courseName}")
+    @PutMapping("/{studentId}/courses/{courseName}")
     public ResponseEntity<?> attachCourseToStudent(
             @PathVariable("studentId") Integer studentId,
             @PathVariable("courseName") String courseName) {
@@ -55,7 +54,7 @@ public class StudentController {
         return ResponseEntity.ok().build();
     }
 
-    @DeleteMapping("/{studentId}/course/{courseName}")
+    @DeleteMapping("/{studentId}/courses/{courseName}")
     public ResponseEntity<?> detachCourseFromStudent(
             @PathVariable("studentId") Integer studentId,
             @PathVariable("courseName") String courseName) {

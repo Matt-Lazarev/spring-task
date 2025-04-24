@@ -22,7 +22,7 @@ public class EmployeeService {
 
     @Transactional(readOnly = true)
     public EmployeeDto getEmployeeById(Integer id) {
-        Employee employee = repository.getEmployeeById(id).orElseThrow(() ->
+        Employee employee = repository.findEmployeeById(id).orElseThrow(() ->
                 new NoSuchEmployeeException("Employee with id = '%d' not found".formatted(id)));
         return mapper.toEmployeeDto(employee);
     }
@@ -35,7 +35,7 @@ public class EmployeeService {
 
     @Transactional(readOnly = true)
     public List<EmployeeDto> getEmployeesByDepartment(Integer departmentId) {
-        List<Employee> employees = repository.getEmployeesByDepartment(departmentId);
+        List<Employee> employees = repository.findEmployeesByDepartment(departmentId);
         return mapper.toEmployeesDto(employees);
     }
 
@@ -53,25 +53,30 @@ public class EmployeeService {
 
     @Transactional
     public void attachEmployeeToDepartment(Integer employeeId, Integer departmentId) {
-        Employee employee = repository.getEmployeeById(employeeId).orElseThrow(() ->
+        Employee employee = repository.findEmployeeById(employeeId).orElseThrow(() ->
                 new NoSuchEmployeeException("Employee with id = '%d' not found".formatted(employeeId))
         );
 
         Department department = departmentService.getDepartmentById(departmentId);
-
-        if (employee.getDepartment() == null) {
-            employee.setDepartment(department);
-        }
+        employee.setDepartment(department);
 
         repository.save(employee);
     }
 
     @Transactional
-    public void createEmployeeToDepartment(Integer departmentId, EmployeeDto employeeDto) {
+    public void createEmployeeInDepartment(Integer departmentId, EmployeeDto employeeDto) {
+        //Department + Employees
         Department department = departmentService.getDepartmentById(departmentId);
+
+        // getEmployeeById() -> 1 Employee + 1 Department
+        // getDepartmentById() -> 1 Department + N Employees
+
         Employee employee = mapper.toEmployee(employeeDto);
         employee.setDepartment(department);
 
+        // select exists();
+        // select not exists() where name = :name;
+        // insert into employees (name, job, department_id) values ('Mike', 'Developer', 1);
         if (!department.getEmployees().contains(employee)) {
             department.getEmployees().add(employee);
         }
@@ -81,7 +86,7 @@ public class EmployeeService {
 
     @Transactional
     public void detachEmployeeFromDepartment(Integer departmentId, Integer employeeId) {
-        Employee employee = repository.findById(employeeId).orElseThrow(() ->
+        Employee employee = repository.findEmployeeById(employeeId).orElseThrow(() ->
                 new NoSuchEmployeeException("Employee with id = '%d' not found".formatted(employeeId)));
 
         if (employee.getDepartment() != null && employee.getDepartment().getId().equals(departmentId)) {
@@ -94,16 +99,15 @@ public class EmployeeService {
     public void transferEmployeeToDepartment(Integer employeeId, Integer departmentId) {
         Employee employee = repository.findById(employeeId).orElseThrow(() ->
                 new NoSuchEmployeeException("Employee with id = '%d' not found".formatted(employeeId)));
-        if (employee.getDepartment() != null && !employee.getDepartment().getId().equals(departmentId)) {
-            Department department = departmentService.getDepartmentById(departmentId);
-            employee.setDepartment(department);
-            repository.save(employee);
-        }
+
+        Department department = departmentService.getDepartmentById(departmentId);
+        employee.setDepartment(department);
+        repository.save(employee);
     }
 
     @Transactional
     public void updateEmployeeById(Integer id, EmployeeDto employeeDto) {
-        Employee updatableEmployee = repository.getEmployeeById(id).orElseThrow(() ->
+        Employee updatableEmployee = repository.findById(id).orElseThrow(() ->
                 new NoSuchEmployeeException("Employee with id = '%d' not found".formatted(id))
         );
 
@@ -113,7 +117,7 @@ public class EmployeeService {
 
     @Transactional
     public void deleteEmployeeById(Integer id) {
-        Employee deletableEmployee = repository.getEmployeeById(id).orElseThrow(() ->
+        Employee deletableEmployee = repository.findById(id).orElseThrow(() ->
                 new NoSuchEmployeeException("Employee with id = '%d' not found".formatted(id))
         );
 

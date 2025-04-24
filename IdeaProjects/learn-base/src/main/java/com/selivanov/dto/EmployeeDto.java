@@ -8,12 +8,8 @@ import jakarta.validation.constraints.Size;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public record EmployeeDto(
         Integer id,
-        @NotNull(message = "Name cannot be null")
-        @NotBlank(message = "Name cannot be empty or blank")
         @Size(min = 1, max = 21, message = "Name should be from 1 to 21 symbols")
         String name,
-        @NotNull(message = "Job cannot be null")
-        @NotBlank(message = "Job cannot be empty or blank")
         @Size(min = 3, max = 21, message = "Job should be from 3 to 21 symbols")
         String job,
         DepartmentDto department

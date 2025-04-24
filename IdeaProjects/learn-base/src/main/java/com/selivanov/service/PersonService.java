@@ -46,13 +46,14 @@ public class PersonService {
         return mapper.toPassportDto(passport);
     }
 
+    //todo
     @Transactional
     public void savePerson(PersonDto personDto) {
         Person person = mapper.toPerson(personDto);
-
         repository.save(person);
     }
 
+    //todo
     @Transactional
     public void addPassportToPerson(Integer personId, PassportDto passportDto) {
         Person person = repository.findPersonById(personId).orElseThrow(
@@ -90,8 +91,6 @@ public class PersonService {
                         "Person with id = '%d' not found".formatted(personId)
                 )
         );
-        Passport passport = person.getPassport();
-
         person.setPassport(null);
         repository.save(person); //ignores if passport == null
     }

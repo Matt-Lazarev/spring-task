@@ -1,5 +1,6 @@
 package com.selivanov.exception;
 
+import com.selivanov.dto.ErrorResponse;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -13,8 +14,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 import java.util.List;
 
 @RestControllerAdvice
-public class GlobalExceptionHandler
-        extends ResponseEntityExceptionHandler {
+public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
@@ -29,20 +29,13 @@ public class GlobalExceptionHandler
 
         return ResponseEntity
                 .status(status)
-                .body(new com.selivanov.dto.ErrorResponse(status.value(), "Validation error", list));
+                .body(new ErrorResponse(status.value(), "Validation error", list));
     }
 
-    @ExceptionHandler({
-            NoSuchPassportException.class,
-            NoSuchPersonException.class,
-            NoSuchEmployeeException.class,
-            NoSuchDepartmentException.class,
-            NoSuchStudentException.class,
-            NoSuchCourseException.class
-    })
+    @ExceptionHandler(NoSuchEntityException.class)
     public ResponseEntity<com.selivanov.dto.ErrorResponse> handleNotFoundException(Exception ex) {
         return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)
-                .body(new com.selivanov.dto.ErrorResponse(HttpStatus.NOT_FOUND.value(), ex.getMessage(), null));
+                .body(new ErrorResponse(HttpStatus.NOT_FOUND.value(), ex.getMessage(), null));
     }
 }

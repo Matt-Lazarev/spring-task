@@ -9,8 +9,6 @@ import java.util.List;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public record StudentDto(
         Integer id,
-        @NotNull(message = "Name cannot be null")
-        @NotBlank(message = "Name cannot be empty or blank")
         @Size(min = 1, max = 21, message = "Name should be from 1 to 21 symbols")
         String name,
         List<CourseDto> courses

@@ -15,7 +15,9 @@ public class Employee {
     private String name;
     private String job;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    // EAGER 1 select (Employee + Department)
+    // LAZY 2 select (Employee, Department)
+    @ManyToOne(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     @JoinColumn(name = "department_id", referencedColumnName = "id")
     private Department department;
 }

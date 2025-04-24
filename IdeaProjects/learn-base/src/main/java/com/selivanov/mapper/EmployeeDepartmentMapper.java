@@ -12,11 +12,16 @@ import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface EmployeeDepartmentMapper {
+    @Mapping(target = "department", ignore = true)
     EmployeeDto toEmployeeDto(Employee employee);
+
+    @Mapping(target = "department", ignore = true)
     Employee toEmployee(EmployeeDto employeeDto);
     @Mapping(target = "department", ignore = true)
     List<EmployeeDto> toEmployeesDto(List<Employee> employees);
     DepartmentDto toDepartmentDto(Department department);
     Department toDepartment(DepartmentDto departmentDto);
+
+    @Mapping(target = "department", ignore = true)
     void updateEmployee(@MappingTarget Employee updatableEmployee, EmployeeDto employeeDto);
 }

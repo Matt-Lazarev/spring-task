@@ -12,7 +12,7 @@ import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface PersonPassportMapper {
-    @Mapping(target = "passport.id", source = "passportId")
+    @Mapping(target = "passport", ignore = true)
     Person toPerson(PersonDto personDto);
 
     @Mapping(target = "passportId", source = "passport.id")
