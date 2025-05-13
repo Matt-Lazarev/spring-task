@@ -23,6 +23,7 @@ public class StudentController {
 
     @Value("${kafka.topics.student-request}")
     private String studentTopic;
+
     private final KafkaTemplate<Integer, StudentDto> kafkaTemplate;
 
     @GetMapping("/{id}")

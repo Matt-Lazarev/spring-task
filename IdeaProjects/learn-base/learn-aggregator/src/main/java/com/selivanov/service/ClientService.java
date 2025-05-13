@@ -1,19 +1,23 @@
 package com.selivanov.service;
 
+import com.selivanov.client.StudentClient;
 import com.selivanov.dto.StudentDto;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
+//                           logic
+// RestTemplate <- Client <- Service
 
 @Service
+@RequiredArgsConstructor
 public class ClientService {
+    private final StudentClient studentClient;
+
     public StudentDto getStudentByName(String name) {
-        RestTemplate restTemplate = new RestTemplate();
-        return restTemplate.getForObject("http://localhost:8080/api/students/name/%s".formatted(name),
-                StudentDto.class);
+        return studentClient.getStudentByName(name);
     }
 
-    public void getStudentByNameAsync(StudentDto studentDto) {
+    public void consumeStudentResponse(StudentDto studentDto) {
         System.out.println("name: " + studentDto.name() + ", courses: " + studentDto.courses());
     }
 }

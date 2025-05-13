@@ -18,16 +18,19 @@ spring:
 
   datasource:
     driverClassName: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/learn_base
+    url: jdbc:postgresql://localhost:5432/test
     username: pg
     password: root
 
   jpa:
     hibernate:
-      ddl-auto: none
+      ddl-auto: none # data definition language
     show-sql: true
 
   flyway:
     enabled: true
 #    baseline-on-migrate: true
 #    baseline-version: 2
+
+clients:
+  student: "http://localhost:8080"
