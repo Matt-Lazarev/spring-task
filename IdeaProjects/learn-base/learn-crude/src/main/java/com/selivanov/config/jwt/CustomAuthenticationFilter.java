@@ -1,9 +1,9 @@
 package com.selivanov.config.jwt;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.selivanov.dto.AuthRequest;
-import com.selivanov.dto.AuthResponse;
-import com.selivanov.dto.ErrorResponse;
+import com.selivanov.dto.error.ErrorResponse;
+import com.selivanov.model.auth.AuthRequest;
+import com.selivanov.model.auth.AuthResponse;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -26,7 +26,7 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
     private final JwtUtil jwtUtil;
 
     @Override
-    @SneakyThrows
+    @SneakyThrows //login
     public Authentication attemptAuthentication(HttpServletRequest request,
                                                 HttpServletResponse response) throws AuthenticationException {
         // Проверка метода запроса
@@ -65,7 +65,7 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
         response.setStatus(HttpStatus.UNAUTHORIZED.value());
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
 
-        ErrorResponse errorResponse = new ErrorResponse(HttpStatus.UNAUTHORIZED.value(), failed.getMessage(), null);
+        ErrorResponse errorResponse = new ErrorResponse(HttpStatus.UNAUTHORIZED.value(), failed.getMessage());
         MAPPER.writeValue(response.getOutputStream(), errorResponse);
     }
 }

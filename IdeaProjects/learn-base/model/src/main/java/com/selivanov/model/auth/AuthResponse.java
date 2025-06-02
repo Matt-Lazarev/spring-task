@@ -1,4 +1,4 @@
-package com.selivanov.dto;
+package com.selivanov.model.auth;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 

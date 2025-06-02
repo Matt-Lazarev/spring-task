@@ -1,6 +1,6 @@
 package com.selivanov.config.jwt;
 
-import com.selivanov.dto.UserTokenInfo;
+import com.selivanov.dto.security.UserTokenInfo;
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
@@ -39,8 +39,6 @@ public class JwtUtil {
     }
 
     public UserTokenInfo validateToken(String accessToken) {
-        accessToken = accessToken.replace(JwtConfig.TOKEN_PREFIX, "");
-
         Claims claims = Jwts.parser()
                 .verifyWith(secretKey)
                 .build()

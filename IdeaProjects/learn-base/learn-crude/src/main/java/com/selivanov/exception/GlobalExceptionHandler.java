@@ -1,5 +1,8 @@
 package com.selivanov.exception;
 
+import com.selivanov.dto.error.FieldError;
+import com.selivanov.dto.error.ErrorResponse;
+import com.selivanov.dto.error.ValidationErrorResponse;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -21,24 +24,25 @@ public class GlobalExceptionHandler
                                                                   HttpHeaders headers,
                                                                   HttpStatusCode status,
                                                                   WebRequest errors) {
-        List<String> list = ex.getBindingResult()
+        // field <-> error Map<String, String>
+        List<FieldError> list = ex.getBindingResult()
                 .getFieldErrors()
                 .stream()
-                .map(fieldError -> fieldError.getDefaultMessage())
+                .map(fieldError -> new FieldError(fieldError.getField(), fieldError.getDefaultMessage()))
                 .toList();
 
         return ResponseEntity
                 .status(status)
-                .body(new com.selivanov.dto.ErrorResponse(status.value(), "Validation error", list));
+                .body(new ValidationErrorResponse(status.value(), "Validation error", list));
     }
 
     @ExceptionHandler({
             NoSuchEntityException.class,
             ExistPassportException.class
     })
-    public ResponseEntity<com.selivanov.dto.ErrorResponse> handleNotFoundException(Exception ex) {
+    public ResponseEntity<ErrorResponse> handleNotFoundException(Exception ex) {
         return ResponseEntity
                 .status(HttpStatus.NOT_FOUND)
-                .body(new com.selivanov.dto.ErrorResponse(HttpStatus.NOT_FOUND.value(), ex.getMessage(), null));
+                .body(new ErrorResponse(HttpStatus.NOT_FOUND.value(), ex.getMessage()));
     }
 }

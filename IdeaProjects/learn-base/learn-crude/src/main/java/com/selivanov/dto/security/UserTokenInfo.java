@@ -1,4 +1,4 @@
-package com.selivanov.dto;
+package com.selivanov.dto.security;
 
 import org.springframework.security.core.GrantedAuthority;
 

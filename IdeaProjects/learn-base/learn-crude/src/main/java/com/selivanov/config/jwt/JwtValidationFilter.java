@@ -1,8 +1,8 @@
 package com.selivanov.config.jwt;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.selivanov.dto.ErrorResponse;
-import com.selivanov.dto.UserTokenInfo;
+import com.selivanov.dto.error.ErrorResponse;
+import com.selivanov.dto.security.UserTokenInfo;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.security.SignatureException;
@@ -55,7 +55,7 @@ public class JwtValidationFilter extends OncePerRequestFilter {
     private void handleException(HttpServletResponse response, String message, Exception e) {
         response.setStatus(HttpStatus.UNAUTHORIZED.value());
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-        MAPPER.writeValue(response.getWriter(), new ErrorResponse(HttpStatus.UNAUTHORIZED.value(), message, null));
+        MAPPER.writeValue(response.getWriter(), new ErrorResponse(HttpStatus.UNAUTHORIZED.value(), message));
     }
 
     @Override

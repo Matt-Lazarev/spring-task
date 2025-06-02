@@ -1,5 +1,10 @@
 clients:
-  student: "http://localhost:8080/api/students"
+  first:
+    base-url: "http://localhost:8080"
+    username: "user"
+    password: "12345"
+  service-2: "http://localhost:8081"
+  service-3: "http://localhost:8082"
 
 server:
   port: 8081

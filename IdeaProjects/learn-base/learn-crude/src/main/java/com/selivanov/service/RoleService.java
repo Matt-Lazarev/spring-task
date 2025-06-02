@@ -22,8 +22,8 @@ public class RoleService {
     }
 
     @Transactional
-    public Role findRoleByName(UserDto userDto) {
-        return roleRepository.findRoleByName(userDto.role())
-                .orElseThrow(() -> new NoSuchEntityException("Role with name: %s not found".formatted(userDto.role())));
+    public Role findRoleByName(String role) {
+        return roleRepository.findRoleByName(role)
+                .orElseThrow(() -> new NoSuchEntityException("Role with name: %s not found".formatted(role)));
     }
 }
