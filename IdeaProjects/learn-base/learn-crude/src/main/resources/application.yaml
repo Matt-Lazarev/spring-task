@@ -18,8 +18,8 @@ spring:
 
   datasource:
     driverClassName: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/learn_base
-    username: pg
+    url: jdbc:postgresql://localhost:5432/test
+    username: lazarev
     password: root
 
   jpa:
@@ -29,13 +29,13 @@ spring:
 
   flyway:
     enabled: true
-#    baseline-on-migrate: true
-#    baseline-version: 2
+#    locations: 'classpath:db/migration'
+
 jwt:
   config:
     secret: 'c2VjcmV0X3NlY3JldF9zZWNyZXRfc2VjcmV0X3NlY3JldA=='
-    tokenExpirationMs: 60_000
-    refreshTokenExpirationMs: 3600_000
+    tokenExpirationMs: 600_000
+    refreshTokenExpirationMs: 360_000_000
 
 clients:
   university: "http://localhost:8080"

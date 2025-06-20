@@ -21,6 +21,7 @@ public class ClientService {
     public StudentDto getStudentByName(String name) {
         return studentClient.getStudentByName(name);
     }
+
     public void consumeStudentResponse(StudentDto studentDto) {
         log.info("Message sent to KafkaProducer in topic" + studentTopic);
     }

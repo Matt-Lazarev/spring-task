@@ -24,7 +24,7 @@ public class JwtRestTemplateInterceptor implements ClientHttpRequestInterceptor 
         AuthResponse tokenResponse = authClient.getToken();
 
         if (tokenResponse != null && tokenResponse.accessToken() != null) {
-            request.getHeaders().add(HttpHeaders.AUTHORIZATION, "Bearer " + tokenResponse.accessToken());
+            request.getHeaders().add(HttpHeaders.AUTHORIZATION, tokenResponse.accessToken());
         }
 
         return execution.execute(request, body);

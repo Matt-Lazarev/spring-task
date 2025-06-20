@@ -15,12 +15,6 @@
     <dependencies>
         <dependency>
             <groupId>org.example</groupId>
-            <artifactId>learn-aggregator</artifactId>
-            <version>1.0</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.example</groupId>
             <artifactId>model</artifactId>
             <version>1.0</version>
         </dependency>

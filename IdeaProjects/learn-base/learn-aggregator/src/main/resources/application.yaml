@@ -22,20 +22,6 @@ spring:
       key-serializer: "org.apache.kafka.common.serialization.IntegerSerializer"
       value-serializer: "org.springframework.kafka.support.serializer.JsonSerializer"
 
-  datasource:
-    driverClassName: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/learn_base
-    username: pg
-    password: root
-
-  jpa:
-    hibernate:
-      ddl-auto: none
-    show-sql: true
-
-  flyway:
-    enabled: true
-
 jwt:
   config:
     secret: 'c2VjcmV0X3NlY3JldF9zZWNyZXRfc2VjcmV0X3NlY3JldA=='

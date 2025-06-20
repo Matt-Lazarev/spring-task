@@ -1,16 +1,6 @@
 version: '3'
 
 services:
-  postgres:
-    image: 'postgres:13'
-    container_name: 'learn-base'
-    ports:
-      - 5432:5432
-    environment:
-      - 'POSTGRES_USER=pg'
-      - 'POSTGRES_HOST_AUTH_METHOD=trust'
-      - 'POSTGRES_DB=learn_base'
-
   zookeeper:
     image: confluentinc/cp-zookeeper:7.2.1
     hostname: zoo
